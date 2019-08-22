@@ -1,9 +1,13 @@
-import React, { Component } from 'react'
-import HelloWorld from './components/HelloWorld'
+import React, { Component } from "react"
+import Board from "./components/Board"
 
 class App extends Component {
   render() {
-    return <HelloWorld />
+    return (
+      <div>
+        <Board />
+      </div>
+    )
   }
 }
 
