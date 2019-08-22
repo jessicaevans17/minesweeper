@@ -1,21 +1,17 @@
 import React, { Component } from "react"
 import Axios from "axios"
+import Cell from "./Cell"
+
 class Board extends Component {
   state = {
-    board: [
-      [" ", " ", " ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " ", " ", " "]
-    ]
+    board: [],
+    mines: 0,
+    difficulty: 0,
+    id: ""
   }
 
   boxClicked = (x, y) => {
-    console.log("clicked!")
+    console.log("clicked")
   }
 
   componentDidMount() {
@@ -23,8 +19,12 @@ class Board extends Component {
       method: "post",
       url: "http://minesweeper-api.herokuapp.com/games"
     }).then(res => {
+      console.log(res)
       this.setState({
-        board: res.data.board
+        board: res.data.board,
+        mines: res.data.mines,
+        difficulty: res.data.difficulty,
+        id: res.data.id
       })
     })
   }
@@ -33,6 +33,11 @@ class Board extends Component {
       <>
         <h1>Minesweeper!</h1>
         <main>
+          <section className="game-play">
+            <h2 className="mine-count">Mines = {this.state.mines}</h2>
+            <h2 className="flag-count">Flags = 10</h2>
+          </section>
+
           <table className="game-board">
             <tbody>
               {this.state.board.map((col, i) => {
@@ -40,9 +45,11 @@ class Board extends Component {
                   <tr key={i}>
                     {col.map((row, j) => {
                       return (
-                        <td key={j} onClick={() => this.boxClicked(i, j)}>
-                          {(i, j)}
-                        </td>
+                        <Cell
+                          key={j}
+                          display={this.state.board[i][j]}
+                          handleClick={() => this.boxClicked(i, j)}
+                        />
                       )
                     })}
                   </tr>

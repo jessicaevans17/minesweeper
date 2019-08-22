@@ -16,11 +16,23 @@ h1 {
 
 main {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
+
+.game-play {
+  display: flex;
+  justify-content: space-around;
+}
+
+.mine-count {
+  padding-right: 1rem;
+}
+
 td {
-  padding: 1rem;
+  padding: 2rem;
   margin: 1rem;
   text-align: center;
   border: solid 5px black;
+  pointer-events: all;
 }
