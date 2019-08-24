@@ -1,6 +1,8 @@
 import React, { Component } from "react"
 import Axios from "axios"
 import Cell from "./Cell"
+import GameOver from "./GameOver"
+import ResetGame from "./ResetGame"
 
 class Board extends Component {
   state = {
@@ -50,8 +52,16 @@ class Board extends Component {
     if (this.state.state === "lost") {
       this.setState({
         status: "Oh no, you lose!! Try again!"
-      }) 
-    } else if ()
+      })
+    } else if (this.state.state === "won") {
+      this.setState({
+        status: "Yay! You won!"
+      })
+    }
+  }
+
+  resetGame = () => {
+    this.componentDidMount()
   }
 
   async componentDidMount() {
@@ -72,7 +82,8 @@ class Board extends Component {
         <h1>Minesweeper!</h1>
         <main>
           <section className="game-play" />
-          <section className="gameOver">{this.state.status}</section>
+          <GameOver displayResult={this.state.status} />
+          <ResetGame resetClick={this.resetGame} />
           <table className="game-board">
             <tbody>
               {this.state.board.map((col, i) => {
