@@ -7,37 +7,72 @@ class Board extends Component {
     board: [],
     mines: 0,
     difficulty: 0,
-    id: ""
+    id: "",
+    state: "",
+    status: ""
   }
 
-  boxClicked = (x, y) => {
-    console.log("clicked")
+  leftClick = async (x, y) => {
+    const response = await Axios.post(
+      `https://minesweeper-api.herokuapp.com/games/${this.state.id}/check`,
+      {
+        row: x,
+        col: y
+      }
+    )
+    console.log(response)
+    this.setState({
+      board: response.data.board,
+      id: response.data.id,
+      mines: response.data.mines,
+      state: response.data.state
+    })
+    this.gameOver()
   }
 
-  componentDidMount() {
-    Axios({
-      method: "post",
-      url: "http://minesweeper-api.herokuapp.com/games"
-    }).then(res => {
-      console.log(res)
+  rightClick = async (x, y, event) => {
+    const response = await Axios.post(
+      `https://minesweeper-api.herokuapp.com/games/${this.state.id}/flag`,
+      {
+        row: x,
+        col: y
+      }
+    )
+    this.setState({
+      board: response.data.board,
+      id: response.data.id,
+      state: response.data.state
+    })
+    console.log(response)
+  }
+
+  gameOver = async () => {
+    if (this.state.state === "lost") {
       this.setState({
-        board: res.data.board,
-        mines: res.data.mines,
-        difficulty: res.data.difficulty,
-        id: res.data.id
-      })
+        status: "Oh no, you lose!! Try again!"
+      }) 
+    } else if ()
+  }
+
+  async componentDidMount() {
+    const response = await Axios.post(
+      "https://minesweeper-api.herokuapp.com/games"
+    )
+    console.log(response)
+    this.setState({
+      board: response.data.board,
+      mines: response.data.mines,
+      id: response.data.id
     })
   }
+
   render() {
     return (
       <>
         <h1>Minesweeper!</h1>
         <main>
-          <section className="game-play">
-            <h2 className="mine-count">Mines = {this.state.mines}</h2>
-            <h2 className="flag-count">Flags = 10</h2>
-          </section>
-
+          <section className="game-play" />
+          <section className="gameOver">{this.state.status}</section>
           <table className="game-board">
             <tbody>
               {this.state.board.map((col, i) => {
@@ -48,7 +83,8 @@ class Board extends Component {
                         <Cell
                           key={j}
                           display={this.state.board[i][j]}
-                          handleClick={() => this.boxClicked(i, j)}
+                          handleLeftClick={() => this.leftClick(i, j)}
+                          handleRightClick={() => this.rightClick(i, j)}
                         />
                       )
                     })}
