@@ -3,17 +3,36 @@ import Axios from "axios"
 import Cell from "./Cell"
 import GameOver from "./GameOver"
 import ResetGame from "./ResetGame"
+import ChooseDifficulty from "./ChooseDifficulty"
 
 class Board extends Component {
   state = {
     board: [],
-    mines: 0,
-    difficulty: 0,
+    difficulty: "",
     id: "",
     state: "",
     status: ""
   }
 
+  createGame = async number => {
+    const response = await Axios.post(
+      "https://minesweeper-api.herokuapp.com/games",
+      {
+        difficulty: number
+      }
+    )
+    console.log(response)
+    this.setState({
+      board: response.data.board,
+      id: response.data.id,
+      difficulty: response.data.difficulty
+    })
+  }
+
+  showBoard = () => {
+    if (this.state.board) {
+    }
+  }
   leftClick = async (x, y) => {
     const response = await Axios.post(
       `https://minesweeper-api.herokuapp.com/games/${this.state.id}/check`,
@@ -26,13 +45,12 @@ class Board extends Component {
     this.setState({
       board: response.data.board,
       id: response.data.id,
-      mines: response.data.mines,
       state: response.data.state
     })
     this.gameOver()
   }
 
-  rightClick = async (x, y, event) => {
+  rightClick = async (x, y) => {
     const response = await Axios.post(
       `https://minesweeper-api.herokuapp.com/games/${this.state.id}/flag`,
       {
@@ -61,26 +79,24 @@ class Board extends Component {
   }
 
   resetGame = () => {
-    this.componentDidMount()
-  }
-
-  async componentDidMount() {
-    const response = await Axios.post(
-      "https://minesweeper-api.herokuapp.com/games"
-    )
-    console.log(response)
+    this.createGame()
     this.setState({
-      board: response.data.board,
-      mines: response.data.mines,
-      id: response.data.id
+      status: ""
     })
   }
+
+  async componentDidMount() {}
 
   render() {
     return (
       <>
-        <h1>Minesweeper!</h1>
-        <main>
+        <h1 className="title-header">Bomb Sniffer!</h1>
+        <ChooseDifficulty
+          easyLevel={() => this.createGame(0)}
+          mediumLevel={() => this.createGame(1)}
+          hardLevel={() => this.createGame(2)}
+        />
+        <main className="main-board">
           <section className="game-play" />
           <GameOver displayResult={this.state.status} />
           <ResetGame resetClick={this.resetGame} />
