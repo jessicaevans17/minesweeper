@@ -15,10 +15,6 @@ body {
   background-color: var(--blue);
 }
 
-/* .main-board {
-  display: none;
-} */
-
 .difficulty-options {
   display: flex;
   flex-direction: column;
@@ -63,7 +59,7 @@ main {
 }
 
 td {
-  padding: 1rem;
+  padding: 0.25rem;
   width: 1.5rem;
   height: 1.5rem;
   text-align: center;
@@ -78,7 +74,7 @@ tr {
 }
 
 tbody {
-  font-size: 1rem;
+  font-size: 0.75rem;
 }
 .game-over {
   color: var(--white);
