@@ -24,7 +24,7 @@ body {
   flex-direction: column;
   align-items: center;
   background-color: var(--white);
-  margin: 0rem 9rem;
+  margin: 0rem 26rem;
   padding: 1rem 0rem;
   border: solid black 2px;
   border-radius: 1rem;
@@ -63,7 +63,7 @@ main {
 }
 
 td {
-  padding: 2rem;
+  padding: 1rem;
   width: 1.5rem;
   height: 1.5rem;
   text-align: center;
@@ -78,7 +78,7 @@ tr {
 }
 
 tbody {
-  font-size: 2rem;
+  font-size: 1rem;
 }
 .game-over {
   color: var(--white);

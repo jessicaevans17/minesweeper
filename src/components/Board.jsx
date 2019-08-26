@@ -85,8 +85,6 @@ class Board extends Component {
     })
   }
 
-  async componentDidMount() {}
-
   render() {
     return (
       <>
